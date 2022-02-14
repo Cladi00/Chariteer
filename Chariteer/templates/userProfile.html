@@ -1,0 +1,296 @@
+{% extends "base.html" %}  
+{% block content %}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chariteer Home</title>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+      integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      
+       .navbar {
+        background: #fff;
+        height: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.1rem;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        /* drop shadow */
+        -webkit-box-shadow: 0 8px 6px -6px #999;
+        -moz-box-shadow: 0 8px 6px -6px #999;
+        box-shadow: 0 8px 6px -6px #999;
+      }
+  
+      .navbar__container {
+        display: flex;
+        justify-content: space-between;
+        height: 80px;
+        z-index: 1;
+        width: 100%;
+        max-width: 1300px;
+        margin-right: auto;
+        margin-left: auto;
+        padding-right: 50px;
+        padding-left: 50px;
+      }
+      
+      .navbar__menu {
+        display: flex;
+        align-items: center;
+        list-style: none;
+        text-align: center;
+      }
+      
+      .navbar__item {
+        height: 80px;
+      }
+      
+      .navbar__links {
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        padding: 0 1rem;
+        height: 100%;
+      }
+      
+      .navbar__btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+      }
+
+      .button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        padding: 10px 20px;
+        height: 100%;
+        width: 100%;
+        border: none;
+        outline: none;
+        border-radius: 4px;
+        background: #FF7F50;
+        color: #fff;
+      }
+  
+      .button:hover {
+        background: #FF6C37;
+        transition: all 0.3s ease;
+      }
+      
+      .navbar__links:hover {
+        color: #FF7F50;
+        transition: all 0.3s ease;
+      }
+    </style>
+  </head>
+  <body onload="test()"> 
+    <!-- Navbar Section -->
+    <nav class="navbar">
+      <div class="navbar__container">
+        <a class="navbar__brand" href="#">
+          <a href="/index"><img src="{{ url_for('static',filename='images/chariteer-logo_minimalist-dot-even-border.png')}}" style="display: inline-block;"></a>
+        <div class="navbar__toggle" id="mobile-menu">
+          <span class="bar"></span> <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+        <ul class="navbar__menu">
+          <li class="navbar__item">
+            <a href="browse_volunteers.html" class="navbar__links">Browse Volunteers</a>
+          </li>
+          <li class="navbar__item">
+            <a href="browse_charities.html" class="navbar__links">Browse Charities</a>
+          </li>
+          <li class="navbar__item">
+            <a href="/about" class="navbar__links">About</a>
+          </li>
+          {% if ( Disname == 'Guest'): %} 
+	  <li class="navbar__item">
+            <a href="login" class="navbar__links">Login</a>
+          </li>
+	  <li class="navbar__btn"><a href="#services" class="button">Sign Up</a></li>
+	  {% else: %} 
+	  <li class="navbar__item">
+            <a href="/user" class="navbar__links">{{Disname}}</a>
+          </li>
+	  <li class="navbar__btn"><a href="/logout" class="button">Logout</a></li>
+	  {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+	<div> 
+	<br>
+	<br>
+	{% if (Update =='Y'): %}
+        <p style="color:red"> Information updated! </p>
+        {% endif %}
+        <!-- Welcome {{Disname}} , {{Dis_First_Name}} -->
+        <h1> User Profile </h1>
+
+	<Table><tr><td width="50%">
+        <form name="login" action="#" method="post">
+	
+	<input style="display:none" type="text" value="{{UsrType}}" name="in_UsrType">
+        Name: <input type="text" value="{{Disname}}" name="in_user"><br>
+        Password: <input type="text" value="****" name="in_pw"><br>
+	{% if (UsrType == 'Type-0'): %}
+	Registered Charity Number: <input type="text" value="{{Dis_charNum}}" name="in_charNum"><br>
+	Organization_name:<input type="text" value="{{Org_Name}}" name="in_orgName"><br>
+	<p style="display:none">First Name: <input type="text" value="{{Dis_First_Name}}" name="in_first_name"></p>
+        {% else: %}
+	<p style="display:none">Registered Charity Number: <input type="text" value="{{Dis_charNum}}" name="in_charNum"><br></p>
+        <p style="display:none">Organization_name:<input type="text" value="{{Org_Name}}" name="in_orgName"><br></p>
+	First Name: <input type="text" value="{{Dis_First_Name}}" name="in_first_name"><br>
+	{% endif %}
+	Email: <input type="text" value="{{Dis_Email}}" name="in_email"><br>
+	<br>
+	{% if (UsrType == 'Type-0'): %} Requirement:
+	{% else: %} Your Skills:
+	{% endif %}
+<div style="padding:20px">
+<input type="checkbox" id="cb1" onclick='test()'  value="Communications and Marketing" {% if Skill.find("Communications and Marketing") != -1: %} checked {% endif %} >Communications and Marketing <input style="display:none" type="text" id="in_cb1" name="in_cb1"> <br>
+<input type="checkbox" id="cb2" onclick='test()' value="Campaigning" {% if Skill.find("Campaigning") != -1: %} checked {% endif %}>Campaigning <input type="text" style="display:none" id="in_cb2" name="in_cb2"><br>
+<input type="checkbox" id="cb3" onclick='test()' value="Copywriting / Journalism" {% if Skill.find("Copywriting / Journalism") != -1: %} checked {% endif %}>Copywriting / Journalism <input type="text" style="display:none" id="in_cb3" name="in_cb3"><br>
+<input type="checkbox" id="cb4" onclick='test()' value="Event management" {% if Skill.find("Event management") != -1: %} checked {% endif %}>Event management <input type="text" id="in_cb4" style="display:none" name="in_cb4"><br>
+<input type="checkbox" id="cb5" onclick='test()' value="Marketing strategy" {% if Skill.find("Marketing strategy") != -1: %} checked {% endif %}>Marketing strategy <input type="text" id="in_cb5" style="display:none" name="in_cb5"><br>
+<input type="checkbox" id="cb6" onclick='test()' value="Public relations"{% if Skill.find("Public relations") != -1: %} checked {% endif %}>Public relations <input type="text" id="in_cb6" style="display:none" name="in_cb6"><br>
+<input type="checkbox" id="cb7" onclick='test()' value="Social media marketing" {% if Skill.find("Social media marketing") != -1: %} checked {% endif %}>Social media marketing <input type="text" style="display:none" id="in_cb7" name="in_cb7"><br>
+<br /><br />
+	</div>
+
+</div>
+        <input type="submit"  value="Update">
+</form>
+	<br><br>
+	</div></td><td>
+	<!-- {{Skill Recommendation}} -->
+	</td>
+	</table>
+<script type="text/javascript">
+
+
+function test() {
+ var myVar = document.getElementById("cb1").value;
+ var myVar2 = document.getElementById("cb2").value;
+ var myVar3 = document.getElementById("cb3").value;
+ var myVar4 = document.getElementById("cb4").value;
+ var myVar5 = document.getElementById("cb5").value;
+ var myVar6 = document.getElementById("cb6").value;
+ var myVar7 = document.getElementById("cb7").value;
+ if (cb1.checked) {
+        document.getElementById("in_cb1").value = myVar;
+        }
+ if (!cb1.checked) {
+        document.getElementById("in_cb1").value = '';
+        }
+ if (cb2.checked) {
+        document.getElementById("in_cb2").value = myVar2;
+        }
+ if (!cb2.checked) {
+        document.getElementById("in_cb2").value = '';
+        }
+ if (cb3.checked) {
+        document.getElementById("in_cb3").value = myVar3;
+        }
+ if (!cb3.checked) {
+        document.getElementById("in_cb3").value = '';
+        }
+ if (cb4.checked) {
+        document.getElementById("in_cb4").value = myVar4;
+        }
+ if (!cb4.checked) {
+        document.getElementById("in_cb4").value = '';
+        }
+ if (cb5.checked) {
+        document.getElementById("in_cb5").value = myVar5;
+        }
+ if (!cb5.checked) {
+        document.getElementById("in_cb5").value = '';
+        }
+ if (cb6.checked) {
+        document.getElementById("in_cb6").value = myVar6;
+        }
+ if (!cb6.checked) {
+        document.getElementById("in_cb6").value = '';
+        }
+ if (cb7.checked) {
+        document.getElementById("in_cb7").value = myVar7;
+        }
+ if (!cb7.checked) {
+        document.getElementById("in_cb7").value = '';
+        }
+}
+
+</script>
+    <!-- Footer Section -->
+    <div class="footer__container">
+      <section class="social__media">
+        <div class="social__media--wrap">
+          <div class="footer__logo">
+            <a class="footer__brand" href="#">
+              <img src="{{ url_for('static',filename='images/chariteer-logo_white-no-border.png')}}" style="display: inline-block;">
+            </a>
+          </div>
+          <p class="website__rights">© Chariteer | TechLabs | 2021</p>
+          <div class="social__icons">
+            <a
+              class="social__icon--link"
+              href="/"
+              target="_blank"
+              aria-label="Facebook"
+            >
+              <i class="fab fa-facebook"></i>
+            </a>
+            <a
+              class="social__icon--link"
+              href="/"
+              target="_blank"
+              aria-label="Instagram"
+            >
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a
+              class="social__icon--link"
+              href="//www.youtube.com/channel/UCsKsymTY_4BYR-wytLjex7A?view_as=subscriber"
+              target="_blank"
+              aria-label="Youtube"
+            >
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a
+              class="social__icon--link"
+              href="/"
+              target="_blank"
+              aria-label="Twitter"
+            >
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a
+              class="social__icon--link"
+              href="/"
+              target="_blank"
+              aria-label="LinkedIn"
+            >
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+{% endblock %}

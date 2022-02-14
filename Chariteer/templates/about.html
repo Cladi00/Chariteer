@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+{% block content %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+      integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      
+       .navbar {
+        background: #fff;
+        height: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.1rem;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        /* drop shadow */
+        -webkit-box-shadow: 0 8px 6px -6px #999;
+        -moz-box-shadow: 0 8px 6px -6px #999;
+        box-shadow: 0 8px 6px -6px #999;
+      }
+  
+      .navbar__container {
+        display: flex;
+        justify-content: space-between;
+        height: 80px;
+        z-index: 1;
+        width: 100%;
+        max-width: 1300px;
+        margin-right: auto;
+        margin-left: auto;
+        padding-right: 50px;
+        padding-left: 50px;
+      }
+      
+      .navbar__menu {
+        display: flex;
+        align-items: center;
+        list-style: none;
+        text-align: center;
+      }
+      
+      .navbar__item {
+        height: 80px;
+      }
+      
+      .navbar__links {
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        padding: 0 1rem;
+        height: 100%;
+      }
+      
+      .navbar__btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+      }
+
+      .button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        padding: 10px 20px;
+        height: 100%;
+        width: 100%;
+        border: none;
+        outline: none;
+        border-radius: 4px;
+        background: #FF7F50;
+        color: #fff;
+      }
+  
+      .button:hover {
+        background: #FF6C37;
+        transition: all 0.3s ease;
+      }
+      
+      .navbar__links:hover {
+        color: #FF7F50;
+        transition: all 0.3s ease;
+      }
+    </style>
+  <body>
+    <!-- Navbar Section -->
+    <nav class="navbar">
+      <div class="navbar__container">
+        <a class="navbar__brand" href="#">
+          <a href="index"><img src="{{ url_for('static',filename='images/chariteer-logo_minimalist-dot-even-border.png')}}" style="display: inline-block;"></a>
+        <div class="navbar__toggle" id="mobile-menu">
+          <span class="bar"></span> <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+        <ul class="navbar__menu">
+          <li class="navbar__item">
+            <a href="browse_volunteers.html" class="navbar__links">Browse Volunteers</a>
+          </li>
+          <li class="navbar__item">
+            <a href="browse_charities.html" class="navbar__links">Browse Charities</a>
+          </li>
+          <li class="navbar__item">
+            <a href="about" class="navbar__links">About</a>
+          </li>
+	  {% if ( Disname == 'Guest'): %}
+          <li class="navbar__item">
+            <a href="login" class="navbar__links">Login</a>
+          </li>
+          <li class="navbar__btn"><a href="#services" class="button">Sign Up</a></li>
+	  {% else: %}
+          <li class="navbar__item">
+            <a href="/user" class="navbar__links">{{Disname}}</a>
+          </li>
+          <li class="navbar__btn"><a href="/logout" class="button">Logout</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="main">
+      <div class="main__container">
+        <div class="main__content">
+          <h1>About Chariteer</h1>
+          <p>Ever wondered where you can find skilled volunteers for your needs? Or where you can put your skills to good use?</p><br>
+          <p>Chariteer is a platform that matches charities with people based on skillsets, and allows people who want to volunteer to find an organisation that is in need of their talents.</p>
+          <button class="main__btn"><a href="#services">Get Started</a></button>
+        </div>
+        <div class="main__img--container">
+          <img id="main__img" src="{{ url_for('static',filename='images/undraw_team_collaboration_re_ow29.svg')}}" alt="Drawing of team" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Volunteer/Charity Section -->
+    <div id = "services" class="services">
+      <h1>Get Involved</h1>
+      <div class="services__container">
+        <div class="services__card">
+          <img id="services__img" src="{{ url_for('static',filename='images/undraw_team_collaboration_re_ow29.svg')}}" alt="Drawing of team"/>
+          <h2>I work for an organisation</h2>
+          <button onclick="window.location.href='charity_registration';">Get Started</button>
+        </div>
+        <div class="services__card">
+          <img id="services__img" src="{{ url_for('static',filename='images/undraw_dreamer_re_9tua.svg')}}" alt="Drawing of volunteer"/>
+          <h2>I want to volunteer</h2>
+          <button onclick="window.location.href='volunteer_registration';">Get Started</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer__container">
+      <section class="social__media">
+        <div class="social__media--wrap">
+          <div class="footer__logo">
+            <a class="footer__brand" href="#">
+              <img src="{{ url_for('static',filename='images/chariteer-logo_white-no-border.png')}}" style="display: inline-block;">
+            </a>
+          </div>
+          <p class="website__rights">© Chariteer | TechLabs | 2021</p>
+          <div class="social__icons">
+            <a
+              class="social__icon--link"
+              href="/"
+              target="_blank"
+              aria-label="Facebook"
+            >
+              <i class="fab fa-facebook"></i>
+            </a>
+            <a
+              class="social__icon--link"
+              href="/"
+              target="_blank"
+              aria-label="Instagram"
+            >
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a
+              class="social__icon--link"
+              href="//www.youtube.com/channel/UCsKsymTY_4BYR-wytLjex7A?view_as=subscriber"
+              target="_blank"
+              aria-label="Youtube"
+            >
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a
+              class="social__icon--link"
+              href="/"
+              target="_blank"
+              aria-label="Twitter"
+            >
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a
+              class="social__icon--link"
+              href="/"
+              target="_blank"
+              aria-label="LinkedIn"
+            >
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+</body>
+{% endblock %}
